@@ -7,11 +7,11 @@
  * Return: allocated string containg history file
  */
 
-char *get_history_file(info_t *info)
+char *get_history_file(info_t *half)
 {
 	char *baf, *dar;
 
-	dar = _getenv(info, "HOME=");
+	dar = _getenv(half, "HOME=");
 	if (!dar)
 		return (NULL);
 	baf = malloc(sizeof(char) * (_strlen(dar) + _strlen(HIST_FILE) + 2));
@@ -30,10 +30,10 @@ char *get_history_file(info_t *info)
  *
  * Return: 1 on success, else -1
  */
-int write_history(info_t *info)
+int write_history(info_t *half)
 {
 	ssize_t fd;
-	char *filename = get_history_file(info);
+	char *filename = get_history_file(half);
 	list_t *node = NULL;
 
 	if (!filename)
@@ -43,7 +43,7 @@ int write_history(info_t *info)
 	free(filename);
 	if (fd == -1)
 		return (-1);
-	for (node = info->history; node; node = node->next)
+	for (node = half->history; node; node = node->next)
 	{
 		_putsfd(node->str, fd);
 		_putfd('\n', fd);
@@ -59,12 +59,12 @@ int write_history(info_t *info)
  *
  * Return: histcount on success, 0 otherwise
  */
-int read_history(info_t *info)
+int read_history(info_t *half)
 {
 	int k, last = 0, linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
 	struct stat st;
-	char *baf = NULL, *filename = get_history_file(info);
+	char *baf = NULL, *filename = get_history_file(half);
 
 	if (!filename)
 		return (0);
@@ -86,20 +86,20 @@ int read_history(info_t *info)
 		return (free(baf), 0);
 	close(fd);
 	for (k = 0; k < fsize; k++)
-		if (baf[i] == '\n')
+		if (baf[k] == '\n')
 		{
 			baf[k] = 0;
-			build_history_list(info, baf + last, linecount++);
+			build_history_list(half, baf + last, linecount++);
 			last = k + 1;
 		}
 	if (last != k)
-		build_history_list(info, baf + last, linecount++);
+		build_history_list(half, baf + last, linecount++);
 	free(baf);
-	info->histcount = linecount;
-	while (info->histcount-- >= HIST_MAX)
-		delete_node_at_index(&(info->history), 0);
-	renumber_history(info);
-	return (info->histcount);
+	half->histcount = linecount;
+	while (half->histcount-- >= HIST_MAX)
+		delete_node_at_index(&(half->history), 0);
+	renumber_history(half);
+	return (half->histcount);
 }
 
 /**
@@ -110,16 +110,16 @@ int read_history(info_t *info)
  *
  * Return: Always 0
  */
-int build_history_list(info_t *info, char *baf, int linecount)
+int build_history_list(info_t *half, char *baf, int linecount)
 {
 	list_t *node = NULL;
 
-	if (info->history)
-		node = info->history;
-	add_node_end(&node, buf, linecount);
+	if (half->history)
+		node = half->history;
+	add_node_end(&node, baf, linecount);
 
-	if (!info->history)
-		info->history = node;
+	if (!half->history)
+		half->history = node;
 	return (0);
 }
 
@@ -129,9 +129,9 @@ int build_history_list(info_t *info, char *baf, int linecount)
  *
  * Return: the new histcount
  */
-int renumber_history(info_t *info)
+int renumber_history(info_t *half)
 {
-	list_t *node = info->history;
+	list_t *node = half->history;
 	int k = 0;
 
 	while (node)
@@ -139,6 +139,6 @@ int renumber_history(info_t *info)
 		node->num = k++;
 		node = node->next;
 	}
-	return (info->histcount = k);
+	return (half->histcount = k);
 }
 

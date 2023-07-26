@@ -8,17 +8,17 @@
  */
 int _erratoi(char *s)
 {
-	int i = 0;
+	int q = 0;
 	unsigned long int result = 0;
 
 	if (*s == '+')
 		s++;  /* TODO: why does this make main return 255? */
-	for (i = 0;  s[i] != '\0'; i++)
+	for (q = 0;  s[q] != '\0'; q++)
 	{
-		if (s[i] >= '0' && s[i] <= '9')
+		if (s[q] >= '0' && s[q] <= '9')
 		{
 			result *= 10;
-			result += (s[i] - '0');
+			result += (s[q] - '0');
 			if (result > INT_MAX)
 				return (-1);
 		}
@@ -29,23 +29,12 @@ int _erratoi(char *s)
 }
 
 /**
- * print_error - Prints an error message.
- * @info: A structure containing parameter and return information.
- * @estr: A string containing the specified error type.
- *
- * This function is responsible for printing an error message related to the given
- * error type, which is specified in the @estr parameter. The error message is output
- * based on the context of the program's execution or any encountered errors.
- * 
- * The function takes the @info argument, which is a structure containing information
- * related to function parameters and return values, although it may not be directly
- * used in this implementation.
- *
- * Return: 0 if no specific numbers are in the error message string,
- *         or a converted number if relevant to the error message.
- *         Returns -1 on error or failure to print the message.
+ * print_error - prints an error message
+ * @info: the parameter & return info struct
+ * @estr: string containing specified error type
+ * Return: 0 if no numbers in string, converted number otherwise
+ *        -1 on error
  */
-
 void print_error(info_t *info, char *estr)
 {
 	_eputs(info->fname);
@@ -58,21 +47,16 @@ void print_error(info_t *info, char *estr)
 }
 
 /**
- * print_d - Prints a decimal (integer) number in base 10.
- * @input: The input integer to be printed.
- * @fd: The file descriptor to write the output to.
+ * print_d - function prints a decimal (integer) number (base 10)
+ * @input: the input
+ * @fd: the filedescriptor to write to
  *
- * This function is responsible for printing the decimal (integer) number @input
- * in base 10 to the specified file descriptor @fd. The function uses the standard
- * base 10 representation for printing the number.
- *
- * Return: The number of characters printed on success, or -1 on failure.
+ * Return: number of characters printed
  */
-
 int print_d(int input, int fd)
 {
 	int (*__putchar)(char) = _putchar;
-	int i, count = 0;
+	int q, count = 0;
 	unsigned int _abs_, current;
 
 	if (fd == STDERR_FILENO)
@@ -86,14 +70,14 @@ int print_d(int input, int fd)
 	else
 		_abs_ = input;
 	current = _abs_;
-	for (i = 1000000000; i > 1; i /= 10)
+	for (q = 1000000000; q > 1; q /= 10)
 	{
-		if (_abs_ / i)
+		if (_abs_ / q)
 		{
-			__putchar('0' + current / i);
+			__putchar('0' + current / q);
 			count++;
 		}
-		current %= i;
+		current %= q;
 	}
 	__putchar('0' + current);
 	count++;
@@ -102,24 +86,13 @@ int print_d(int input, int fd)
 }
 
 /**
- * convert_number - Converts a number to a string representation.
- * @num: The number to convert.
- * @base: The base for the conversion (e.g., decimal, binary, hexadecimal).
- * @flags: Additional argument flags (if applicable).
+ * convert_number - converter function, a clone of itoa
+ * @num: number
+ * @base: base
+ * @flags: argument flags
  *
- * This function is responsible for converting the integer @num to a string representation,
- * using the specified @base. The function takes into account the base value to perform the
- * appropriate conversion (e.g., base 10 for decimal, base 2 for binary, base 16 for hexadecimal).
- * The result is returned as a dynamically allocated string.
- *
- * If needed, the function may take additional @flags to customize the conversion behavior
- * (e.g., for formatting options or special handling). In this implementation, the @flags
- * argument is optional and may not be used.
- *
- * Return: A dynamically allocated string representing the converted number.
- *         The caller is responsible for freeing the allocated memory when done using the string.
+ * Return: string
  */
-
 char *convert_number(long int num, int base, int flags)
 {
 	static char *array;
@@ -149,28 +122,19 @@ char *convert_number(long int num, int base, int flags)
 }
 
 /**
- * remove_comments - Replaces the first instance of '#' with '\0'.
- * @buf: The address of the string to modify.
+ * remove_comments - function replaces first instance of '#' with '\0'
+ * @buf: address of the string to modify
  *
- * This function is responsible for searching the input string pointed to by @buf
- * for the first occurrence of the '#' character. When the '#' character is found,
- * it is replaced with the null terminator '\0', effectively removing the remaining
- * content from that point onward.
- * 
- * The function modifies the input string in-place, terminating it at the first '#' found.
- * It does not remove '#' characters occurring after the first occurrence.
- * 
- * Return: Always 0
+ * Return: Always 0;
  */
-
 void remove_comments(char *buf)
 {
-	int i;
+	int q;
 
-	for (i = 0; buf[i] != '\0'; i++)
-		if (buf[i] == '#' && (!i || buf[i - 1] == ' '))
+	for (q = 0; buf[q] != '\0'; q++)
+		if (buf[q] == '#' && (!q || buf[q - 1] == ' '))
 		{
-			buf[i] = '\0';
+			buf[q] = '\0';
 			break;
 		}
 }

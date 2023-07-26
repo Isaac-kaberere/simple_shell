@@ -6,9 +6,9 @@
  *
  * Return: 1 if responsive mode, 0 otherwise
  */
-int interactive(info_t *info)
+int interactive(info_t *half)
 {
-	return (isatty(STDIN_FILENO) && info->readfd <= 2);
+	return (isatty(STDIN_FILENO) && half->readfd <= 2);
 }
 
 /**
@@ -47,19 +47,19 @@ int _isalpha(int c)
 
 int _atoi(char *s)
 {
-	int i, sign = 1, flag = 0, output;
+	int r, sign = 1, flag = 0, output;
 	unsigned int result = 0;
 
-	for (i = 0; s[i] != '\0' && flag != 2; i++)
+	for (r = 0; s[r] != '\0' && flag != 2; r++)
 	{
-		if (s[i] == '-')
+		if (s[r] == '-')
 			sign *= -1;
 
-		if (s[i] >= '0' && s[i] <= '9')
+		if (s[r] >= '0' && s[r] <= '9')
 		{
 			flag = 1;
 			result *= 10;
-			result += (s[i] - '0');
+			result += (s[r] - '0');
 		}
 		else if (flag == 1)
 			flag = 2;

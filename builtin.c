@@ -4,22 +4,18 @@
  * _myexit - exits the shell
  * @info: Structure containing potential arguments. Used to maintain
  * constant function prototype.
- * This function is responsible for terminating the shell. It checks if
- * the command entered is exit (found in info.argv[0]), and if so, it 
- * exits the shell with the given exit status. If the command is not
- * exit, the function does not perform any action and returns 0.
- *
- * Return: Exits the shell with a given exit status (0) if info.argv[0]
- * != "exit".
+ * Return: exits with a given exit status
+ * (0) if info.argv[0] != "exit"
  */
+
 int _myexit(info_t *info)
 {
-	int exitcheck;
+	int x;
 
 	if (info->argv[1]) /* If there is an exit arguement */
 	{
-		exitcheck = _erratoi(info->argv[1]);
-		if (exitcheck == -1)
+	       x  = _erratoi(info->argv[1]);
+		if (x == -1)
 		{
 			info->status = 2;
 			print_error(info, "Illegal number: ");
@@ -38,13 +34,9 @@ int _myexit(info_t *info)
  * _mycd - changes the current directory of the process
  * @info: Structure containing potential arguments. Used to maintain
  * constant function prototype.
- * This function takes the @info argument as input, which may contain
- * information related to changing the current directory. It is used to 
- * update the current working directory of the process. The function does
- * not return any valuee
- *
  * Return: Always 0
  */
+
 int _mycd(info_t *info)
 {
 	char *s, *dir, buffer[1024];

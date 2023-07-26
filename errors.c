@@ -6,16 +6,16 @@
  *
  * Return: Nothing
  */
-void _eputs(char *str)
+void _eputs(char *ser)
 {
-	int i = 0;
+	int z = 0;
 
-	if (!str)
+	if (!ser)
 		return;
-	while (str[i] != '\0')
+	while (ser[z] != '\0')
 	{
-		_eputchar(str[i]);
-		i++;
+		_eputchar(ser[z]);
+		z++;
 	}
 }
 
@@ -28,16 +28,16 @@ void _eputs(char *str)
  */
 int _eputchar(char c)
 {
-	static int i;
+	static int z;
 	static char buf[WRITE_BUF_SIZE];
 
-	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	if (c == BUF_FLUSH || z >= WRITE_BUF_SIZE)
 	{
-		write(2, buf, i);
-		i = 0;
+		write(2, buf, z);
+		z = 0;
 	}
 	if (c != BUF_FLUSH)
-		buf[i++] = c;
+		buf[z++] = c;
 	return (1);
 }
 
@@ -51,30 +51,30 @@ int _eputchar(char c)
  */
 int _putfd(char c, int fd)
 {
-	static int i;
+	static int z;
 	static char buf[WRITE_BUF_SIZE];
 
-	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	if (c == BUF_FLUSH || z >= WRITE_BUF_SIZE)
 	{
-		write(fd, buf, i);
-		i = 0;
+		write(fd, buf, z);
+		z = 0;
 	}
 	if (c != BUF_FLUSH)
-		buf[i++] = c;
+		buf[z++] = c;
 	return (1);
 }
 
 
-int _putsfd(char *str, int fd)
+int _putsfd(char *ser, int fd)
 {
-	int i = 0;
+	int z = 0;
 
-	if (!str)
+	if (!ser)
 		return (0);
-	while (*str)
+	while (*ser)
 	{
-		i += _putfd(*str++, fd);
+		z += _putfd(*ser++, fd);
 	}
-	return (i);
+	return (z);
 }
 

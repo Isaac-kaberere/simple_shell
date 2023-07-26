@@ -6,16 +6,16 @@
  *
  * Return: size of list
  */
-size_t list_len(const list_t *h)
+size_t list_len(const list_t *v)
 {
-	size_t d = 0;
+	size_t f = 0;
 
-	while (h)
+	while (v)
 	{
-		h = h->next;
-		d++;
+		v = v->next;
+		f++;
 	}
-	return (d);
+	return (f);
 }
 
 /**
@@ -27,30 +27,30 @@ size_t list_len(const list_t *h)
 char **list_to_strings(list_t *head)
 {
 	list_t *node = head;
-	size_t d = list_len(head), j;
+	size_t f = list_len(head), j;
 	char **strs;
 	char *str;
 
-	if (!head || !d)
+	if (!head || !f)
 		return (NULL);
-	strs = malloc(sizeof(char *) * (d + 1));
+	strs = malloc(sizeof(char *) * (f + 1));
 	if (!strs)
 		return (NULL);
-	for (d = 0; node; node = node->next, d++)
+	for (d = 0; node; node = node->next, f++)
 	{
 		str = malloc(_strlen(node->str) + 1);
 		if (!str)
 		{
-			for (j = 0; j < d; j++)
+			for (j = 0; j < f; j++)
 				free(strs[j]);
 			free(strs);
 			return (NULL);
 		}
 
 		str = _strcpy(str, node->str);
-		strs[d] = str;
+		strs[f] = str;
 	}
-	strs[d] = NULL;
+	strs[f] = NULL;
 	return (strs);
 }
 
@@ -61,21 +61,21 @@ char **list_to_strings(list_t *head)
  *
  * Return: size of list
  */
-size_t print_list(const list_t *h)
+size_t print_list(const list_t *v)
 {
-	size_t d = 0;
+	size_t f = 0;
 
-	while (h)
+	while (v)
 	{
-		_puts(convert_number(h->num, 10, 0));
+		_puts(convert_number(v->num, 10, 0));
 		_putchar(':');
 		_putchar(' ');
-		_puts(h->str ? h->str : "(nil)");
+		_puts(v->str ? v->str : "(nil)");
 		_puts("\n");
-		h = h->next;
-		d++;
+		v = v->next;
+		f++;
 	}
-	return (d);
+	return (f);
 }
 
 /**
@@ -109,14 +109,14 @@ list_t *node_starts_with(list_t *node, char *prefix, char c)
  */
 ssize_t get_node_index(list_t *head, list_t *node)
 {
-	size_t d = 0;
+	size_t f = 0;
 
 	while (head)
 	{
 		if (head == node)
-			return (d);
+			return (f);
 		head = head->next;
-		d++;
+		f++;
 	}
 	return (-1);
 }
